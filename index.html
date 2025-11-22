@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedConnect | Smart Hospital System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+<body>
+    <!-- Animated Medical Background -->
+    <lottie-player
+        src="https://assets10.lottiefiles.com/packages/lf20_1pxqjqps.json"
+        background="transparent"
+        speed="1"
+        style="position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.15;"
+        loop
+        autoplay>
+    </lottie-player>
+
+    <nav class="navbar">
+        <span class="logo">MedConnect</span>
+    </nav>
+
+    <!-- Medical Animations Above Dashboard -->
+    <div class="medical-animations">
+        <lottie-player
+            src="https://assets10.lottiefiles.com/packages/lf20_1pxqjqps.json"
+            background="transparent"
+            speed="1"
+            style="width: 120px; height: 120px; margin: 0 10px;"
+            loop
+            autoplay>
+        </lottie-player>
+        <lottie-player
+            src="https://assets10.lottiefiles.com/packages/lf20_8gdcgkqh.json"
+            background="transparent"
+            speed="1"
+            style="width: 120px; height: 120px; margin: 0 10px;"
+            loop
+            autoplay>
+        </lottie-player>
+    </div>
+
+    <!-- Loading Screen (hidden by default) -->
+    <div id="loading-screen" style="display:none;">
+        <lottie-player
+            src="https://assets10.lottiefiles.com/packages/lf20_usmfx6bp.json"
+            background="transparent"
+            speed="1"
+            style="width: 120px; height: 120px; margin: 0 auto; display: block;"
+            loop
+            autoplay>
+        </lottie-player>
+        <p style="text-align:center;">Loading...</p>
+    </div>
+
+    <!-- Success Screen (hidden by default) -->
+    <div id="success-screen" style="display:none;">
+        <lottie-player
+            src="https://assets10.lottiefiles.com/packages/lf20_0yfsb3a1.json"
+            background="black"
+            speed="1"
+            style="width: 120px; height: 120px; margin: 0 auto; display: block;"
+            autoplay>
+        </lottie-player>
+        <p style="text-align:center; color:green;">Appointment Booked Successfully!</p>
+    </div>
+
+    <!-- Mobile Number Login System -->
+    <section id="login-section" class="login-section">
+        <h2>Login with Mobile Number</h2>
+        <input type="text" id="mobile-input" placeholder="Enter mobile number" maxlength="10">
+        <button onclick="sendOTP()">Send OTP</button>
+        <div id="otp-area" style="display:none;">
+            <input type="text" id="otp-input" placeholder="Enter OTP" maxlength="6">
+            <button onclick="verifyOTP()">Verify OTP</button>
+        </div>
+        <div id="login-message"></div>
+    </section>
+
+    <section id="dashboard" class="dashboard hidden">
+        <div class="dashboard-header">
+            <h2>Book Your Appointment</h2>
+            <div id="notification-area"></div>
+        </div>
+        <div class="appointment-section">
+            <label for="department-select"><strong>Select Department:</strong></label>
+            <select id="department-select">
+                <option value="">-- Choose Department --</option>
+            </select>
+            <br><br>
+            <label for="doctor-select"><strong>Select Doctor:</strong></label>
+            <select id="doctor-select">
+                <option value="">-- Choose Doctor --</option>
+            </select>
+            <br><br>
+            <label for="appt-time"><strong>Select Time:</strong></label>
+            <input type="time" id="appt-time">
+            <br><br>
+            <button onclick="bookAppointment()">Book Appointment</button>
+            <div id="appointment-message"></div>
+        </div>
+        <div class="dashboard-grid">
+            <div>
+                <strong>Estimated Travel Time (min):</strong> <span id="travel-time">45</span>
+            </div>
+            <div>
+                <strong>Doctor Status:</strong> <span id="doc-status">Available</span>
+            </div>
+            <div>
+                <strong id="leave-timer"></strong>
+            </div>
+            <div id="checkin-status" class="checkin-box pending">Waiting for arrival...</div>
+        </div>
+        <div class="control-panel">
+            <button onclick="simulateTraffic()">Simulate Traffic Jam</button>
+            <button onclick="simulateDoctorDelay()">Simulate Doctor Delay</button>
+            <button onclick="simulateArrival()">Simulate Arrival</button>
+            <button onclick="resetDemo()">Reset</button>
+            <!-- Add inside your dashboard section -->
+<button onclick="getLocationAndShowRoute()">Get My Location & Show Route</button>
+<div id="map" style="width:100%;height:300px;margin-top:1rem;"></div>
+<div id="travel-info"></div>
+        </div>
+        <button onclick="getLocationAndShowRoute()">Get My Location & Show Route</button>
+<div id="map" style="width:100%;height:300px;margin-top:1rem;"></div>
+<div id="travel-info"></div>
+        <!-- Animated background for dashboard -->
+<div class="dashboard-bg-animation">
+    <lottie-player
+        src="https://assets10.lottiefiles.com/packages/lf20_1pxqjqps.json"
+        background="transparent"
+        speed="1"
+        style="width:100vw; height:100vh;"
+        loop
+        autoplay>
+    </lottie-player>
+</div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+<!-- ...existing code above... -->
+
+<!-- Place this after your dashboard section -->
+<div id="medical-records" class="container hidden">
+    <h1>My Medical Records & Insurance</h1>
+    <div class="grid">
+        <!-- Example for Block 1 -->
+        <div class="block">
+            <h2>1. Patient Identification & Registration</h2>
+            <ul>
+                <li><button class="doc-btn" onclick="showUpload('Patient demographic form')">Patient demographic form</button></li>
+                <li><button class="doc-btn" onclick="showUpload('ID proof & insurance details')">ID proof & insurance details</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Consent forms')">Consent forms (general treatment consent)</button></li>
+            </ul>
+        </div>
+        <!-- Repeat for all other blocks and documents, using the same pattern -->
+        <!-- ... (add all other blocks and document buttons as shown above) ... -->
+        <!-- Block 2 Example -->
+        <div class="block">
+            <h2>2. Clinical Documents</h2>
+            <ul>
+                <li><button class="doc-btn" onclick="showUpload('Past medical history')">Past medical history</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Past surgical history')">Past surgical history</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Family history')">Family history</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Drug/allergy history')">Drug/allergy history</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Social history')">Social history (smoking, alcohol, lifestyle)</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Vital signs')">Vital signs (BP, pulse, temperature)</button></li>
+                <li><button class="doc-btn" onclick="showUpload('System-wise examination notes')">System-wise examination notes</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Daily doctor notes')">Daily doctor notes</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Nursing notes')">Nursing notes</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Treatment updates')">Treatment updates</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Laboratory reports')">Laboratory reports (blood tests, urine tests)</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Radiology reports')">Radiology reports (X-ray, CT, MRI, ultrasound)</button></li>
+                <li><button class="doc-btn" onclick="showUpload('ECG/ECHO/EEG reports')">ECG/ECHO/EEG reports</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Prescription sheet')">Prescription sheet</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Medication administration record')">Medication administration record (nurses)</button></li>
+                <li><button class="doc-btn" onclick="showUpload('Injection charts')">Injection charts, IV fluid charts</button></li>
+            </ul>
+        </div>
+        <!-- Continue for blocks 3-8 in the same way -->
+        <!-- ... -->
+    </div>
+    <!-- Upload form modal -->
+    <div id="upload-modal" class="upload-modal hidden">
+        <div class="upload-content">
+            <span id="close-upload" onclick="closeUpload()">&times;</span>
+            <h3 id="upload-title"></h3>
+            <form>
+                <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                <button type="button" onclick="uploadFile()">Upload</button>
+            </form>
+            <div id="upload-status"></div>
+        </div><form id="upload-form">
+    <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+    <button type="button" onclick="uploadFile()">Upload</button>
+</form>
+<div id="upload-status"></div>
+<div id="uploaded-files"></div>
+
+    </div>
+</div>
+</html>
+
